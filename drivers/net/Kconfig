@@ -292,6 +292,12 @@ config ZYNQ_GEM
 	help
 	  This MAC is present in Xilinx Zynq and ZynqMP SoCs.
 
+config NAI_MDIO_MUX_WR
+	depends on ZYNQ_GEM
+	bool "NAI MDIO multiplex interface"
+	help
+	  Use a single MDIO bus to access multiple PHYs.
+
 config PIC32_ETH
 	bool "Microchip PIC32 Ethernet Support"
 	depends on DM_ETH && MACH_PIC32

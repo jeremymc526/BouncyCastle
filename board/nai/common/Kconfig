@@ -1,0 +1,316 @@
+# Copyright (c) 2018, Xilinx, Inc.
+#
+# SPDX-License-Identifier: GPL-2.0
+
+if ARCH_ZYNQMP
+
+config CMD_ZYNQMP
+	bool "Enable ZynqMP specific commands"
+	default y
+	help
+	  Enable ZynqMP specific commands like "zynqmp secure"
+	  which is used for zynqmp secure image verification.
+	  The secure image is a xilinx specific BOOT.BIN with
+	  either authentication or encryption or both encryption
+	  and authentication feature enabled while generating
+	  BOOT.BIN using Xilinx bootgen tool.
+
+endif
+
+menu "North Atlantic Industries options"
+config NAI_COMMON
+	bool "Enable NAI common module"
+	help
+	  This enables NAI common code used by other NAI modules.
+
+config NAI_MB
+	bool "Enable NAI motherboard module"
+	help
+	  This provides NAI motherboard specific information.
+
+config NAI_ZYNQ_SLAVE
+	bool "Enable NAI slave module"
+	help
+	  This provides an interface for communicating with the
+	  slave processor.
+
+config NAI_MODULE_SUPPORT
+	bool "Enable NAI modules module"
+	help
+	  This provides support for modules on NAI boards.
+
+config NAI_MODULE_PROC
+	bool "Enable mmodule access via processor"
+	depends on NAI_MODULE_SUPPORT && !NAI_MODULE_ARM
+	default n
+	help
+	  This provides support for accessing the modules via processor
+	  instead of the ARM.
+
+config NAI_MODULE_ARM
+	bool "Enable module access via ARM"
+	depends on NAI_MODULE_SUPPORT && !NAI_MODULE_PROC
+	default n
+	help
+	  This provides support for accessing the modules via ARM
+	  instead of the processor.
+
+config NAI_MODULE_ID_IIC
+	bool "Read the module ID from module EEPROM"
+	depends on NAI_MODULE_SUPPORT
+	default n
+	help
+	  This provides support for reading module IDs from EEPROM.
+
+config NAI_MODULE1_EEPROM_BUS_NUM
+	int
+	prompt "Module 1 I2C bus number"
+	depends on NAI_MODULE_ID_IIC
+	default 2
+	help
+	  Specify the I2C bus number for module 1.
+
+config NAI_MODULE2_EEPROM_BUS_NUM
+	int
+	prompt "Module 2 I2C bus number"
+	depends on NAI_MODULE_ID_IIC
+	default 3
+	help
+	  Specify the I2C bus number for module 2.
+
+config NAI_MODULE3_EEPROM_BUS_NUM
+	int
+	prompt "Module 3 I2C bus number"
+	depends on NAI_MODULE_ID_IIC
+	default 4
+	help
+	  Specify the I2C bus number for module 3.
+
+config NAI_MODULE4_EEPROM_BUS_NUM
+	int
+	prompt "Module 4 I2C bus number"
+	depends on NAI_MODULE_ID_IIC
+	default 5
+	help
+	  Specify the I2C bus number for module 4.
+
+config NAI_MODULE5_EEPROM_BUS_NUM
+	int
+	prompt "Module 5 I2C bus number"
+	depends on NAI_MODULE_ID_IIC
+	default 6
+	help
+	  Specify the I2C bus number for module 5.
+
+config NAI_MODULE6_EEPROM_BUS_NUM
+	int
+	prompt "Module 6 I2C bus number"
+	depends on NAI_MODULE_ID_IIC
+	default 7
+	help
+	  Specify the I2C bus number for module 6.
+
+config NAI_MAX_MODULE_SLOT
+	int
+	prompt "Specify the maximum module slot"
+	depends on NAI_MODULE_SUPPORT
+	default 6
+	help
+	  Specify the maximum slot number for a module.
+
+config NAI_DEFAULT_MODULE_HI_SIZE_LIMIT
+	hex
+	prompt "Default upper address limit for modules"
+	depends on NAI_MODULE_SUPPORT
+	default 0x200000
+	help
+	  This sets the maximum size of the address space for an
+	  individual module.
+
+config NAI_DEFAULT_MODULE_LO_SIZE_LIMIT
+	hex
+	prompt "Default lower address limit for modules"
+	depends on NAI_MODULE_SUPPORT
+	default 0x4000
+	help
+	  This sets the minimum size of the address space for an
+	  individual module.
+
+config NAI_MAX_MODULE_MASK_SIZE_LIMIT
+	hex
+	prompt "Default maximum address size for modules"
+	depends on NAI_MODULE_SUPPORT
+	default 0x2000000
+	help
+	  This sets the maximum size of the total address space for
+	  all modules.
+
+config NAI_MISC
+	bool "Enable NAI miscellaneous module"
+	help
+	  This provides functions to reset Ethernet and SATA devices,
+	  map PCIe DDR and access Intel POST codes. The individual
+	  functions are managed by additional configuration options.
+
+config NAI_MISC_INFO
+	bool "Displays miscellaneous information"
+	depends on NAI_MISC
+	default n
+	help
+	  This enables the display of NAI miscellaneous information on the
+	  console during booting.
+
+config NAI_PCIE_DDR_MAP
+	bool "Enable mapping of DDR to FPGA PCIE"
+	depends on NAI_MISC
+	default n
+	help
+	  This provides support for mapping CPU DDR to the FPGA via the
+	  PCIE interface.
+
+config NAI_INT2_POSTCODE
+	bool "Enable access to INT2 POST codes"
+	depends on NAI_MISC
+	default n
+	help
+	  This provides support for accessing POST codes on
+	  NAI Intel boards.
+
+config NAI_WP_SATA_CHIP
+	bool "Enable SATA write protect"
+	depends on NAI_MISC
+	default n
+	help
+	  This provides support for enabling  hardware write protect
+	  on the SATA chip.
+
+config NAI_RESET_SATA_CHIP
+	bool "Enable SATA reset"
+	depends on NAI_MISC
+	default n
+	help
+	  This provides support for resetting the SATA chip.
+
+config NAI_RESET_ETH_PHY
+	bool "Enable ethernet reset"
+	depends on NAI_MISC
+	default n
+	help
+	  This provides support for resetting the Ethernet PHYs via
+	  either the FPGA or a GPIO.
+
+config NAI_FPGA_RESET_ETH_PHY
+	bool "Enable FPGA ethernet reset"
+	depends on NAI_RESET_ETH_PHY
+	default n
+	help
+	  This provides support for resetting the Ethernet PHYs via
+	  the FPGA.
+
+config NAI_GPIO_RESET_ETH_PHY
+	bool "Enable GPIO ethernet reset"
+	depends on NAI_RESET_ETH_PHY
+	default n
+	help
+	  This provides support for resetting the Ethernet PHYs via
+	  a GPIO.
+
+config NAI_CPCI
+	bool "Enable NAI Compact PCI module"
+	help
+	  This provides functionality to read all downstream modules
+	  PCI bar sizes and appropriately configure the Compact PCI
+	  BAR size and alignment.
+
+config NAI_SETUP_CPCI_BAR0
+	bool "Enable Compact PCI BAR 0"
+	depends on NAI_CPCI
+	default n
+	help
+	  This enables PCI BAR 0 on the Compact PCI bus.
+
+config NAI_SETUP_CPCI_BAR1
+	bool "Enable Compact PCI BAR 1"
+	depends on NAI_CPCI
+	default n
+	help
+	  This enables PCI BAR 1 on the Compact PCI bus.
+
+config NAI_DEFAULT_LO_CPCI_BAR0_SIZE
+	hex
+	prompt "Lower bound of CPCI BAR 0"
+	depends on NAI_SETUP_CPCI_BAR0
+	default 0x10000
+	help
+	  This sets the lower bound of BAR 0 on the Compact PCI bus.
+
+config NAI_DEFAULT_MAX_CPCI_BAR0_SIZE
+	hex
+	prompt "Upper bound of CPCI BAR 0"
+	depends on NAI_SETUP_CPCI_BAR0
+	default 0x4000000
+	help
+	  This sets the upper bound of BAR 0 on the Compact PCI bus.
+
+config NAI_DEFAULT_LO_CPCI_BAR1_SIZE
+	hex
+	prompt "Lower bound of CPCI BAR 1"
+	depends on NAI_SETUP_CPCI_BAR1
+	default 0x10000
+	help
+	  This sets the lower bound of BAR 1 on the Compact PCI bus.
+
+config NAI_DEFAULT_MAX_CPCI_BAR1_SIZE
+	hex
+	prompt "Upper bound of CPCI BAR 1"
+	depends on NAI_SETUP_CPCI_BAR1
+	default 0x4000000
+	help
+	  This sets the upper bound of BAR 1 on the Compact PCI bus.
+
+config NAI_VME
+	bool "Enable NAI VME module"
+	help
+	  This provides VME functionality for NAI boards.
+
+config NAI_ICB
+	bool "Enable NAI ICB module"
+	help
+	  This provides NAI ICB calibration functionality.
+
+config NAI_ICB_MST
+	bool "Enable NAI ICB master"
+	depends on NAI_ICB
+	default n
+	help
+	  This enables the NAI ICB master.
+
+config ID_EEPROM
+	bool "Enable NAI ID EEPROM module"
+	help
+	  This provides support for the ID EEPROM on NAI boards which
+	  contains board specific information and parameters.
+
+config DISABLE_EEPROM_CRC
+	bool "Disable EEPROM CRC"
+	depends on ID_EEPROM
+	default n
+	help
+	  This disables CRC functionality on data in the ID EEPROM.
+
+config ZYNQ_SERIAL_UART1
+	bool "Enable initialization of UART1"
+	default n
+	help
+	  Enable initialization of UART1 on the Zynq PS.
+
+config ZYNQ_SERIAL_BAUDRATE1
+	int
+	prompt "Specify the baud rate for UART1"
+	depends on ZYNQ_SERIAL_UART1
+	default 921600
+	help
+	  Specify the UART1 baud rate for the Zynq PS.
+
+endmenu
+

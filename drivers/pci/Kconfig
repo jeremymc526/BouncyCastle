@@ -78,6 +78,11 @@ config PCI_XILINX
 	  Enable support for the Xilinx AXI bridge for PCI express, an IP block
 	  which can be used on some generations of Xilinx FPGAs.
 
+config NAI_PCI_EP430
+	bool "Eureka Technology EP430 PCI host controller"
+	help
+	  Enable support for the Eureka Technology EP430 PCI host controller.
+
 config PCIE_LAYERSCAPE
 	bool "Layerscape PCIe support"
 	depends on DM_PCI

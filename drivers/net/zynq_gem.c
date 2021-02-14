@@ -190,7 +190,11 @@ static u32 phy_setup_op(struct zynq_gem_priv *priv, u32 phy_addr, u32 regnum,
 			u32 op, u16 *data)
 {
 	u32 mgtcr;
+#ifdef	CONFIG_NAI_MDIO_MUX_WR
+	struct zynq_gem_regs *regs = (struct zynq_gem_regs *)(ZYNQ_GEM_BASEADDR0);
+#else
 	struct zynq_gem_regs *regs = priv->iobase;
+#endif
 	int err;
 
 	err = wait_for_bit(__func__, &regs->nwsr, ZYNQ_GEM_NWSR_MDIOIDLE_MASK,
@@ -315,7 +319,11 @@ static int zynq_phy_init(struct udevice *dev)
 {
 	int ret;
 	struct zynq_gem_priv *priv = dev_get_priv(dev);
+#ifdef	CONFIG_NAI_MDIO_MUX_WR
+	struct zynq_gem_regs *regs = (struct zynq_gem_regs *)(ZYNQ_GEM_BASEADDR0);
+#else
 	struct zynq_gem_regs *regs = priv->iobase;
+#endif
 	const u32 supported = SUPPORTED_10baseT_Half |
 			SUPPORTED_10baseT_Full |
 			SUPPORTED_100baseT_Half |

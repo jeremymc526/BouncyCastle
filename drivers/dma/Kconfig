@@ -19,4 +19,11 @@ config TI_EDMA3
 	  This driver support data transfer between memory
 	  regions.
 
+config ZYNQ_DMA
+	bool "Zynq DMA driver"
+	help
+	  Enable the Zynq DMA driver for NAI boards.
+	  This driver support data transfer between memory
+	  regions.
+
 endmenu # menu "DMA Support"

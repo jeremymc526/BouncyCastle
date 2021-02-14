@@ -85,6 +85,51 @@ static const struct zynq_slcr_mio_get_status mio_periphs[] = {
 	},
 };
 
+#ifdef CONFIG_NAI_32MB_QSPI_RESET_WR
+/*
+ * This is to workaround a boot_rom error after software reset with 32MB
+ * QSPI.
+ * Solution: toggle QSPI chip reset line to reset the QSPI device to 3byte
+ * address width
+ * NOTE: 12/15/2016 Changed from GPIO9 to GPIO7 since sometime ago hardware
+ *                  changed to using GPIOx.
+ *                  Also changed from Active low to Active high
+ */
+static void nai_reset_qspi(void)
+{
+	u32 data = 0;
+	//Note: 5/16/2017 The QSPI reset GPIO# is set in the platform-auto.h
+	u32 gpio = CONFIG_NAI_32MB_QSPI_RESET_GPIO;
+	
+	
+	//TODO: Once the Zynq GPIO driver is implemented in u-boot we should 
+	//remove the hardcode register address
+	//printf("NAI reset QSPI device \n");
+	//Set gpio to output
+	data = readl(0xe000a204); 
+	data |= (1 << gpio);
+	writel(data, 0xe000a204);
+	
+	//enable gpio to output
+	data = readl(0xe000a208); 
+	data |= (1 << gpio);
+	writel(data, 0xe000a208);
+	
+	//set gpio output to high
+	data = readl(0xe000a040); 
+	data |= (1 << gpio);
+	writel(data, 0xe000a040);
+	
+	//wait 10 ms
+	udelay(10000);
+
+	//set gpio output to low
+	data = readl(0xe000a040); 
+	data &= ~(1 << gpio);
+	writel(data, 0xe000a040);		
+}
+#endif /*CONFIG_NAI_32MB_QSPI_RESET_WR*/
+
 static int slcr_lock = 1; /* 1 means locked, 0 means unlocked */
 
 void zynq_slcr_lock(void)
@@ -106,6 +151,16 @@ void zynq_slcr_unlock(void)
 /* Reset the entire system */
 void zynq_slcr_cpu_reset(void)
 {
+    /*
+	 * This is to workaround a boot_rom error after software reset with 32MB
+     * QSPI.
+	 * Solution: toggle QSPI chip reset line to reset the QSPI device to 3byte
+	 *  address width
+	 */
+#ifdef CONFIG_NAI_32MB_QSPI_RESET_WR
+	nai_reset_qspi();
+#endif
+
 	/*
 	 * Unlock the SLCR then reset the system.
 	 * Note that this seems to require raw i/o

@@ -96,6 +96,21 @@ config SYS_I2C_CADENCE
 	  Say yes here to select Cadence I2C Host Controller. This controller is
 	  e.g. used by Xilinx Zynq.
 
+config SYS_I2C_ZYNQ_AXI
+	tristate "Zynq AXI I2C Controller"
+	depends on (ARCH_ZYNQ || ARM64)
+	help
+	  Say yes here to select Xilinx Zynq AXI I2C Host Controller. This
+	  controller is e.g. used by Xilinx Zynq.
+
+config NAI_MAX_AXI_I2C_PORT
+	int "Number of Zynq AXI I2C ports"
+	depends on SYS_I2C_ZYNQ_AXI
+	default 1
+	help
+	  Say yes here to select the number of Xilinx Zynq AXI I2C Host
+	  Controller ports.
+
 config SYS_I2C_DW
 	bool "Designware I2C Controller"
 	default n

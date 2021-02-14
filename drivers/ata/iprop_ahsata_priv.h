@@ -1,0 +1,188 @@
+/*
+ * Copyright (C) 2010 Freescale Semiconductor, Inc.
+ * Terry Lv <r65388@freescale.com>
+ *
+ * SPDX-License-Identifier:	GPL-2.0+
+ */
+
+#ifndef __IPROP_AHSATA_PRIV_H__
+#define __IPROP_AHSATA_PRIV_H__
+
+/* Generic Host Register */
+
+/* HBA Capabilities Register */
+#define SATA_HOST_CAP_S64A		0x80000000
+#define SATA_HOST_CAP_SNCQ		0x40000000
+#define SATA_HOST_CAP_SSNTF		0x20000000
+#define SATA_HOST_CAP_SMPS		0x10000000
+#define SATA_HOST_CAP_SSS		0x08000000
+#define SATA_HOST_CAP_SALP		0x04000000
+#define SATA_HOST_CAP_SAL		0x02000000
+#define SATA_HOST_CAP_SCLO		0x01000000
+#define SATA_HOST_CAP_ISS_MASK		0x00f00000
+#define SATA_HOST_CAP_ISS_OFFSET	20
+#define SATA_HOST_CAP_SNZO		0x00080000
+#define SATA_HOST_CAP_SAM		0x00040000
+#define SATA_HOST_CAP_SPM		0x00020000
+#define SATA_HOST_CAP_PMD		0x00008000
+#define SATA_HOST_CAP_SSC		0x00004000
+#define SATA_HOST_CAP_PSC		0x00002000
+#define SATA_HOST_CAP_NCS		0x00001f00
+#define SATA_HOST_CAP_CCCS		0x00000080
+#define SATA_HOST_CAP_EMS		0x00000040
+#define SATA_HOST_CAP_SXS		0x00000020
+#define SATA_HOST_CAP_NP_MASK		0x0000001f
+
+/* Global HBA Control Register */
+#define SATA_HOST_GHC_AE	0x80000000
+#define SATA_HOST_GHC_IE	0x00000002
+#define SATA_HOST_GHC_HR	0x00000001
+
+/* Interrupt Status Register */
+
+/* Ports Implemented Register */
+
+/* AHCI Version Register */
+#define SATA_HOST_VS_MJR_MASK	0xffff0000
+#define SATA_HOST_VS_MJR_OFFSET	16
+#define SATA_HOST_VS_MJR_MNR	0x0000ffff
+
+/* Command Completion Coalescing Control */
+#define SATA_HOST_CCC_CTL_TV_MASK	0xffff0000
+#define SATA_HOST_CCC_CTL_TV_OFFSET		16
+#define SATA_HOST_CCC_CTL_CC_MASK	0x0000ff00
+#define SATA_HOST_CCC_CTL_CC_OFFSET		8
+#define SATA_HOST_CCC_CTL_INT_MASK	0x000000f8
+#define SATA_HOST_CCC_CTL_INT_OFFSET	3
+#define SATA_HOST_CCC_CTL_EN	0x00000001
+
+/* Command Completion Coalescing Ports */
+
+/* HBA Capabilities Extended Register */
+#define SATA_HOST_CAP2_APST		0x00000004
+
+/* Port Register Descriptions */
+/* Port# Command List Base Address Register */
+#define SATA_PORT_CLB_CLB_MASK		0xfffffc00
+
+/* Port# Command List Base Address Upper 32-Bits Register */
+
+/* Port# FIS Base Address Register */
+#define SATA_PORT_FB_FB_MASK		0xfffffff0
+
+/* Port# FIS Base Address Upper 32-Bits Register */
+
+/* Port# Interrupt Status Register */
+#define SATA_PORT_IS_CPDS		0x80000000
+#define SATA_PORT_IS_TFES		0x40000000
+#define SATA_PORT_IS_HBFS		0x20000000
+#define SATA_PORT_IS_HBDS		0x10000000
+#define SATA_PORT_IS_IFS		0x08000000
+#define SATA_PORT_IS_INFS		0x04000000
+#define SATA_PORT_IS_OFS		0x01000000
+#define SATA_PORT_IS_IPMS		0x00800000
+#define SATA_PORT_IS_PRCS		0x00400000
+#define SATA_PORT_IS_DMPS		0x00000080
+#define SATA_PORT_IS_PCS		0x00000040
+#define SATA_PORT_IS_DPS		0x00000020
+#define SATA_PORT_IS_UFS		0x00000010
+#define SATA_PORT_IS_SDBS		0x00000008
+#define SATA_PORT_IS_DSS		0x00000004
+#define SATA_PORT_IS_PSS		0x00000002
+#define SATA_PORT_IS_DHRS		0x00000001
+
+/* Port# Interrupt Enable Register */
+#define SATA_PORT_IE_CPDE		0x80000000
+#define SATA_PORT_IE_TFEE		0x40000000
+#define SATA_PORT_IE_HBFE		0x20000000
+#define SATA_PORT_IE_HBDE		0x10000000
+#define SATA_PORT_IE_IFE		0x08000000
+#define SATA_PORT_IE_INFE		0x04000000
+#define SATA_PORT_IE_OFE		0x01000000
+#define SATA_PORT_IE_IPME		0x00800000
+#define SATA_PORT_IE_PRCE		0x00400000
+#define SATA_PORT_IE_DMPE		0x00000080
+#define SATA_PORT_IE_PCE		0x00000040
+#define SATA_PORT_IE_DPE		0x00000020
+#define SATA_PORT_IE_UFE		0x00000010
+#define SATA_PORT_IE_SDBE		0x00000008
+#define SATA_PORT_IE_DSE		0x00000004
+#define SATA_PORT_IE_PSE		0x00000002
+#define SATA_PORT_IE_DHRE		0x00000001
+
+/* Port# Command Register */
+#define SATA_PORT_CMD_ICC_MASK		0xf0000000
+#define SATA_PORT_CMD_ASP		0x08000000
+#define SATA_PORT_CMD_ALPE		0x04000000
+#define SATA_PORT_CMD_DLAE		0x02000000
+#define SATA_PORT_CMD_ATAPI		0x01000000
+#define SATA_PORT_CMD_APSTE		0x00800000
+#define SATA_PORT_CMD_ESP		0x00200000
+#define SATA_PORT_CMD_CPD		0x00100000
+#define SATA_PORT_CMD_MPSP		0x00080000
+#define SATA_PORT_CMD_HPCP		0x00040000
+#define SATA_PORT_CMD_PMA		0x00020000
+#define SATA_PORT_CMD_CPS		0x00010000
+#define SATA_PORT_CMD_CR		0x00008000
+#define SATA_PORT_CMD_FR		0x00004000
+#define SATA_PORT_CMD_MPSS		0x00002000
+#define SATA_PORT_CMD_CCS_MASK		0x00001f00
+#define SATA_PORT_CMD_FRE		0x00000010
+#define SATA_PORT_CMD_CLO		0x00000008
+#define SATA_PORT_CMD_POD		0x00000004
+#define SATA_PORT_CMD_SUD		0x00000002
+#define SATA_PORT_CMD_ST		0x00000001
+
+/* Port# Task File Data Register */
+#define SATA_PORT_TFD_ERR_MASK		0x0000ff00
+#define SATA_PORT_TFD_STS_MASK		0x000000ff
+#define SATA_PORT_TFD_STS_ERR		0x00000001
+#define SATA_PORT_TFD_STS_DRQ		0x00000008
+#define SATA_PORT_TFD_STS_BSY		0x00000080
+
+/* Port# Signature Register */
+
+/* Port# Serial ATA Status {SStatus} Register */
+#define SATA_PORT_SSTS_IPM_MASK		0x00000f00
+#define SATA_PORT_SSTS_SPD_MASK		0x000000f0
+#define SATA_PORT_SSTS_DET_MASK		0x0000000f
+
+/* Port# Serial ATA Control {SControl} Register */
+#define SATA_PORT_SCTL_IPM_MASK		0x00000f00
+#define SATA_PORT_SCTL_SPD_MASK		0x000000f0
+#define SATA_PORT_SCTL_DET_MASK		0x0000000f
+
+/* Port# Serial ATA Error {SError} Register */
+#define SATA_PORT_SERR_DIAG_X		0x04000000
+#define SATA_PORT_SERR_DIAG_F		0x02000000
+#define SATA_PORT_SERR_DIAG_T		0x01000000
+#define SATA_PORT_SERR_DIAG_S		0x00800000
+#define SATA_PORT_SERR_DIAG_H		0x00400000
+#define SATA_PORT_SERR_DIAG_C		0x00200000
+#define SATA_PORT_SERR_DIAG_D		0x00100000
+#define SATA_PORT_SERR_DIAG_B		0x00080000
+#define SATA_PORT_SERR_DIAG_W		0x00040000
+#define SATA_PORT_SERR_DIAG_I		0x00020000
+#define SATA_PORT_SERR_DIAG_N		0x00010000
+#define SATA_PORT_SERR_ERR_E		0x00000800
+#define SATA_PORT_SERR_ERR_P		0x00000400
+#define SATA_PORT_SERR_ERR_C		0x00000200
+#define SATA_PORT_SERR_ERR_T		0x00000100
+#define SATA_PORT_SERR_ERR_M		0x00000002
+#define SATA_PORT_SERR_ERR_I		0x00000001
+
+/* Port# Serial ATA Active {SActive} Register */
+
+/* Port# Command Issue Register */
+
+/* Port# Serial ATA Notification Register */
+
+#define SATA_FLAG_Q_DEP_MASK	0x0000000f
+#define SATA_FLAG_WCACHE	0x00000100
+#define SATA_FLAG_FLUSH		0x00000200
+#define SATA_FLAG_FLUSH_EXT	0x00000400
+
+#define READ_CMD	0
+#define WRITE_CMD	1
+
+#endif /* __IPROP_AHSATA_PRIV_H__ */

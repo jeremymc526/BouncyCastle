@@ -65,6 +65,13 @@ config DWC_AHSATA
 	  Enable this driver to support the DWC AHSATA SATA controller found
 	  in i.MX5 and i.MX6 SoCs.
 
+config IPROP_AHSATA
+	bool "Enable IPROP AHSATA driver support"
+	select LIBATA
+	help
+	  Enable this driver to support the IPROP AHSATA SATA controller found
+	  in Xilinx SoCs.
+
 config FSL_SATA
 	bool "Enable Freescale SATA controller driver support"
 	select LIBATA

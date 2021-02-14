@@ -212,20 +212,25 @@ static int __abortboot(int bootdelay)
 {
 	int abort = 0;
 	unsigned long ts;
+	int keypressed = 0;
 
 #ifdef CONFIG_MENUPROMPT
 	printf(CONFIG_MENUPROMPT);
 #else
-	printf("Hit any key to stop autoboot: %2d ", bootdelay);
+	printf("Hit Esc key to stop autoboot: %2d ", bootdelay);
 #endif
 
 	/*
 	 * Check if key already pressed
 	 */
 	if (tstc()) {	/* we got a key press	*/
-		(void) getc();  /* consume input	*/
-		puts("\b\b\b 0");
-		abort = 1;	/* don't auto boot	*/
+		keypressed = getc();  /* consume input	*/
+		if (keypressed == 0x1B /*Escape Key*/) {
+			while(tstc())
+				(void)getc();
+			puts("\b\b\b 0");
+			abort = 1;	/* don't auto boot	*/
+		}
 	}
 
 	while ((bootdelay > 0) && (!abort)) {
@@ -234,14 +239,19 @@ static int __abortboot(int bootdelay)
 		ts = get_timer(0);
 		do {
 			if (tstc()) {	/* we got a key press	*/
-				abort  = 1;	/* don't auto boot	*/
-				bootdelay = 0;	/* no more delay	*/
 # ifdef CONFIG_MENUKEY
 				menukey = getc();
+				ketpressed = menukey;
 # else
-				(void) getc();  /* consume input	*/
+				keypressed = getc();  /* consume input	*/
 # endif
-				break;
+				if (keypressed == 0x1B /*Escape Key*/) {
+					while(tstc())
+						(void)getc();
+					abort  = 1;	/* don't auto boot	*/
+					bootdelay = 0;	/* no more delay	*/
+					break;
+				}
 			}
 			udelay(10000);
 		} while (!abort && get_timer(ts) < 1000);
@@ -262,10 +272,13 @@ static int abortboot(int bootdelay)
 	if (bootdelay >= 0)
 		abort = __abortboot(bootdelay);
 
+	if (abort) {
 #ifdef CONFIG_SILENT_CONSOLE
-	if (abort)
 		gd->flags &= ~GD_FLG_SILENT;
 #endif
+		while(tstc())
+			(void)getc();		
+	}
 
 	return abort;
 }

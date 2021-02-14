@@ -152,7 +152,8 @@ dtb-$(CONFIG_ARCH_ZYNQ) += \
 	zynq-zc770-xm013.dtb \
 	zynq-zed.dtb \
 	zynq-zturn-myir.dtb \
-	zynq-zybo.dtb
+	zynq-zybo.dtb \
+	zynq-motherboard.dtb
 dtb-$(CONFIG_ARCH_ZYNQMP) += \
 	zynqmp-mini.dtb				\
 	zynqmp-mini-qspi-parallel.dtb		\

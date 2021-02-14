@@ -1,0 +1,47 @@
+# Copyright (c) 2018, Xilinx, Inc.
+#
+# SPDX-License-Identifier: GPL-2.0
+
+if ARCH_ZYNQMP
+
+config CMD_ZYNQMP
+	bool "Enable ZynqMP specific commands"
+	default y
+	help
+	  Enable ZynqMP specific commands like "zynqmp secure"
+	  which is used for zynqmp secure image verification.
+	  The secure image is a xilinx specific BOOT.BIN with
+	  either authentication or encryption or both encryption
+	  and authentication feature enabled while generating
+	  BOOT.BIN using Xilinx bootgen tool.
+
+endif
+
+config NAI_READ_EEPROM_MAC_ADDR
+	bool "Enable reading of MAC address from EEPROM"
+	default n
+	help
+	  Enable an NAI specific function to read the board
+	  Ethernet MAC addresses from I2C EEPROM.
+
+config VERSION_STRING_LEN
+	int
+	prompt "Specify the length of the version string"
+	default 47
+	help
+	  Specify the length of the version string.
+
+config FSBL_VERSION_STRING
+	hex
+	prompt "Specify the FSBL version string address"
+	default 0xfffffd00
+	help
+	  Specifies the address of the FSBL version string.
+
+config UBOOT_VERSION_STRING
+	hex
+	prompt "Specify the UBOOT version string address"
+	default 0xfffffd2f
+	help
+	  Specifies the address of the UBOOT version string.
+

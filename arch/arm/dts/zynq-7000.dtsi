@@ -25,8 +25,8 @@
 			cpu0-supply = <&regulator_vccpint>;
 			operating-points = <
 				/* kHz    uV */
-				666667  1000000
-				333334  1000000
+				766667  1000000
+				383334  1000000
 			>;
 		};
 

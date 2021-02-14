@@ -1345,6 +1345,7 @@ prepare: prepare0
 define filechk_version.h
 	(echo \#define PLAIN_VERSION \"$(UBOOTRELEASE)\"; \
 	echo \#define U_BOOT_VERSION \"U-Boot \" PLAIN_VERSION; \
+	echo \#define NAI_UBOOT_VER \"$(NAI_UBOOT_VER)\"; \
 	echo \#define CC_VERSION_STRING \"$$(LC_ALL=C $(CC) --version | head -n 1)\"; \
 	echo \#define LD_VERSION_STRING \"$$(LC_ALL=C $(LD) --version | head -n 1)\"; )
 endef
@@ -1361,8 +1362,8 @@ define filechk_timestamp.h
 			$${date} -u -d "$${SOURCE_DATE}" >/dev/null 2>&1 && DATE="$${date}"; \
 		done; \
 		if test -n "$${DATE}"; then \
-			LC_ALL=C $${DATE} -u -d "$${SOURCE_DATE}" +'#define U_BOOT_DATE "%b %d %C%y"'; \
-			LC_ALL=C $${DATE} -u -d "$${SOURCE_DATE}" +'#define U_BOOT_TIME "%T"'; \
+			echo \#define U_BOOT_DATE \"$(NAI_UBOOT_DATE)\"; \
+			echo \#define U_BOOT_TIME \"$(NAI_UBOOT_TIME)\"; \
 			LC_ALL=C $${DATE} -u -d "$${SOURCE_DATE}" +'#define U_BOOT_TZ "%z"'; \
 			LC_ALL=C $${DATE} -u -d "$${SOURCE_DATE}" +'#define U_BOOT_DMI_DATE "%m/%d/%Y"'; \
 			LC_ALL=C $${DATE} -u -d "$${SOURCE_DATE}" +'#define U_BOOT_BUILD_DATE 0x%Y%m%d'; \
@@ -1370,8 +1371,8 @@ define filechk_timestamp.h
 			return 42; \
 		fi; \
 	else \
-		LC_ALL=C date +'#define U_BOOT_DATE "%b %d %C%y"'; \
-		LC_ALL=C date +'#define U_BOOT_TIME "%T"'; \
+		echo \#define U_BOOT_DATE \"$(NAI_UBOOT_DATE)\"; \
+		echo \#define U_BOOT_TIME \"$(NAI_UBOOT_TIME)\"; \
 		LC_ALL=C date +'#define U_BOOT_TZ "%z"'; \
 		LC_ALL=C date +'#define U_BOOT_DMI_DATE "%m/%d/%Y"'; \
 		LC_ALL=C date +'#define U_BOOT_BUILD_DATE 0x%Y%m%d'; \

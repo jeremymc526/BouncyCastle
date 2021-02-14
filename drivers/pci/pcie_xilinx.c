@@ -18,6 +18,7 @@
  */
 struct xilinx_pcie {
 	void *cfg_base;
+	void *cfg_base2;
 };
 
 /* Register definitions */
@@ -74,7 +75,10 @@ static int pcie_xilinx_config_address(struct udevice *udev, pci_dev_t bdf,
 	if ((bus < 2) && (dev > 0))
 		return -ENODEV;
 
-	addr = pcie->cfg_base;
+	if ((bus == 0) || (pcie->cfg_base2 == NULL))
+		addr = pcie->cfg_base;
+	else
+		addr = pcie->cfg_base2;
 	addr += bus << 20;
 	addr += dev << 15;
 	addr += func << 12;
@@ -128,6 +132,18 @@ static int pcie_xilinx_write_config(struct udevice *bus, pci_dev_t bdf,
 					     bdf, offset, value, size);
 }
 
+static const struct udevice_id pcie_xilinx_ids[] = {
+	{
+		.compatible = "xlnx,axi-pcie-host-1.00.a",
+		.data = 0,
+	},
+	{
+		.compatible = "nai,pcie-host-1.00.a",
+		.data = 1,
+	},
+	{ }
+};
+
 /**
  * pcie_xilinx_ofdata_to_platdata() - Translate from DT to device state
  * @dev: A pointer to the device being operated on
@@ -144,6 +160,8 @@ static int pcie_xilinx_ofdata_to_platdata(struct udevice *dev)
 	struct fdt_resource reg_res;
 	DECLARE_GLOBAL_DATA_PTR;
 	int err;
+	const struct udevice_id *of_match = pcie_xilinx_ids;
+	ulong match_index = 0;
 
 	err = fdt_get_resource(gd->fdt_blob, dev_of_offset(dev), "reg",
 			       0, &reg_res);
@@ -156,17 +174,38 @@ static int pcie_xilinx_ofdata_to_platdata(struct udevice *dev)
 				     fdt_resource_size(&reg_res),
 				     MAP_NOCACHE);
 
+	while (of_match->compatible) {
+		err = fdt_node_offset_by_compatible(gd->fdt_blob, -1,
+						    of_match->compatible);
+		if (err >= 0) {
+			match_index = of_match->data;
+			break;
+		} else  {
+			of_match++;
+			continue;
+		}
+	}
+
+	if (match_index) {
+		err = fdt_get_resource(gd->fdt_blob, dev_of_offset(dev),
+			"reg", 1, &reg_res);
+
+		if (err < 0) {
+			pr_err("cfg \"reg\" resource not found\n");
+			return err;
+		}
+
+		pcie->cfg_base2 = map_physmem(reg_res.start,
+					      fdt_resource_size(&reg_res),
+					      MAP_NOCACHE);
+	}
+
 	return 0;
 }
 
 static const struct dm_pci_ops pcie_xilinx_ops = {
 	.read_config	= pcie_xilinx_read_config,
 	.write_config	= pcie_xilinx_write_config,
-};
-
-static const struct udevice_id pcie_xilinx_ids[] = {
-	{ .compatible = "xlnx,axi-pcie-host-1.00.a" },
-	{ }
 };
 
 U_BOOT_DRIVER(pcie_xilinx) = {

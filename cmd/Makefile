@@ -118,8 +118,10 @@ obj-$(CONFIG_CMD_TERMINAL) += terminal.o
 obj-$(CONFIG_CMD_TIME) += time.o
 obj-$(CONFIG_CMD_TRACE) += trace.o
 obj-$(CONFIG_HUSH_PARSER) += test.o
-obj-$(CONFIG_CMD_TPM) += tpm.o
+obj-$(CONFIG_CMD_TPM) += tpm-common.o
+obj-$(CONFIG_CMD_TPM_V1) += tpm-v1.o
 obj-$(CONFIG_CMD_TPM_TEST) += tpm_test.o
+obj-$(CONFIG_CMD_TPM_V2) += tpm-v2.o
 obj-$(CONFIG_CMD_CROS_EC) += cros_ec.o
 obj-$(CONFIG_CMD_TSI148) += tsi148.o
 obj-$(CONFIG_CMD_UBI) += ubi.o
@@ -151,6 +153,17 @@ obj-$(CONFIG_CMD_PMIC) += pmic.o
 obj-$(CONFIG_CMD_REGULATOR) += regulator.o
 
 obj-$(CONFIG_CMD_BLOB) += blob.o
+
+# NAI
+obj-$(CONFIG_CMD_NAI_VME) += nai_vme.o
+obj-$(CONFIG_NAI_CMD_ICB) += icb.o
+obj-$(CONFIG_NAI_RECEIVE) += naireceive.o
+obj-$(CONFIG_NAI_SEND) += naisend.o
+obj-$(CONFIG_NAI_SERDES) += naimsgutils.o naiopermsgutils.o naiconfigmsgutils.o
+obj-$(CONFIG_CMD_SC1) += sc1.o
+obj-$(CONFIG_CMD_TVMON) += tvmon.o
+obj-$(CONFIG_CMD_SLAVE) += slave.o
+obj-$(CONFIG_CMD_NAIINFO) += naiinfo.o
 
 obj-$(CONFIG_X86) += x86/
 endif # !CONFIG_SPL_BUILD

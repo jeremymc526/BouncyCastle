@@ -259,7 +259,7 @@ static int spi_flash_update(struct spi_flash *flash, u32 offset,
 	return 0;
 }
 
-static int do_spi_flash_read_write(int argc, char * const argv[])
+int do_spi_flash_read_write(int argc, char * const argv[])
 {
 	unsigned long addr;
 	void *buf;
@@ -317,7 +317,7 @@ static int do_spi_flash_read_write(int argc, char * const argv[])
 	return ret == 0 ? 0 : 1;
 }
 
-static int do_spi_flash_erase(int argc, char * const argv[])
+int do_spi_flash_erase(int argc, char * const argv[])
 {
 	int ret;
 	int dev = 0;
@@ -542,7 +542,7 @@ static int do_spi_flash_test(int argc, char * const argv[])
 }
 #endif /* CONFIG_CMD_SF_TEST */
 
-static int do_spi_flash(cmd_tbl_t *cmdtp, int flag, int argc,
+int do_spi_flash(cmd_tbl_t *cmdtp, int flag, int argc,
 			char * const argv[])
 {
 	const char *cmd;

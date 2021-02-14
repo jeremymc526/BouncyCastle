@@ -74,7 +74,7 @@ ftp://ftp.denx.de/pub/u-boot/images/
 
 
 Where we come from:
-===================
+====================
 
 - start from 8xxrom sources
 - create PPCBoot project (http://sourceforge.net/projects/ppcboot)
