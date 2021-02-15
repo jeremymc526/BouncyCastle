@@ -195,6 +195,9 @@
 /* Support legacy FIT image format */
 #define CONFIG_IMAGE_FORMAT_LEGACY
 
+/* Support legacy FIT image format */
+#define CONFIG_IMAGE_FORMAT_LEGACY
+
 /*NAI MB COMMON */
 #define CONFIG_NAI_COMMON
 
